@@ -6,5 +6,4 @@ CREATE TABLE dll (
     restricted_dll text[] NOT NULL
     session_id INTEGER NOT NULL,
     FOREIGN KEY (session_id) REFERENCES sessions (id)
-
 );
