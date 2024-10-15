@@ -14,9 +14,9 @@
 #endif
 
 #ifdef BUILD_MY_DLL
-    #define MEMCHECK_SHARED_LIB __declspec(dllexport)
+    #define MEMCHECK_SHARED_LIB __declspec(dllexport);
 #else 
-    #define MEMCHECK_SHARED_LIB __declspec(dllimport)
+    #define MEMCHECK_SHARED_LIB __declspec(dllimport);
 #endif
 
 
