@@ -70,17 +70,18 @@ def addPixel(im, char: str):
   f.close()
   return im
 
-f = open("./Logs/log.txt", "w")
-f.close()
-picture = "Pictures/pica.png"
-im = loadImage(picture)
-for i in range(im.size[0] * im.size[1]):
-  im = addPixel(im, "*")
+if __name__ == "__main__":
+  f = open("./Logs/log.txt", "w")
+  f.close()
+  picture = "Pictures/pica.png"
+  im = loadImage(picture)
+  for i in range(im.size[0] * im.size[1]):
+    im = addPixel(im, "*")
 
-# input("continue? > ")
-# im = loadImage(picture)
-# f = open("./Logs/log.txt", "w")
-# f.close()
-# addAllPixel(im, "*")
+  # input("continue? > ")
+  # im = loadImage(picture)
+  # f = open("./Logs/log.txt", "w")
+  # f.close()
+  # addAllPixel(im, "*")
 
-print(im.size)
+  print(im.size)
