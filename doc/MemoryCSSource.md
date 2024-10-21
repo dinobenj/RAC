@@ -27,3 +27,10 @@
 | + 0x144C          | Float           | m_flFlashMaxAlpha    | . |
 | + 0x1450          | Float           | m_flFlashMaxDuration | . |
 | + 0x14F0	        | Integer	      | m_iCrosshairId	     | . |
+| + 0x0d80          | 3 byte (booleans?) | Weapon Held       | The three bytes here only change when swapping weapons. First byte seems to be Entity ID. Not sure on other two bytes |
+| + 0xf4            | 4 Byte Float       | X-pos Velocity    | Velocity in X-pos. Not sure what units are. |
+| + 0xf8            | 4 Byte Float       | Y-pos Velocity    | Velocity in Y-pos. Not sure what units are. |
+| + 0xfC            | 4 Byte Float       | Z-pos Velocity    | Velocity in Z-pos. Not sure what units are. |
+| + 0x290           | 4 Byte Float       | X-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when x-position changes. |
+| + 0x294           | 4 Byte Float       | Y-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when y-position changes. |
+| + 0x298           | 4 Byte Float       | Z-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when z-position changes. |
