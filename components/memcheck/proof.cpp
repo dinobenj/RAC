@@ -2,18 +2,13 @@
 #include <unordered_set>
 #include <cstdlib>
 
-bool in_new_operator = false;
 
 std::unordered_set<void*>& get_allocated_addresses() {
-    static std::unordered_set<void*> allocated_addresses;  
-    return allocated_addresses;
+    //static std::unordered_set<void*> allocated_addresses;  
+    return *new std::unordered_set<void*>;
 }
 
 void* operator new(std::size_t size) {
-    if (in_new_operator) {
-        return std::malloc(size);  
-    }
-    in_new_operator = true;
     std::cout << "Allocating " << size << " bytes." << std::endl;
     void * ptr = std::malloc(size);  
     if (!ptr) {
@@ -23,6 +18,13 @@ void* operator new(std::size_t size) {
     get_allocated_addresses().insert(ptr); 
     std::cout << "Total allocated memory: " << get_allocated_addresses().size() << " blocks." << std::endl;
     return ptr;
+}
+
+void operator delete(void* ptr) noexcept {
+    if (ptr) {
+        get_allocated_addresses().erase(ptr);  
+        std::free(ptr);  
+    }
 }
 
 // void operator delete(void* ptr) noexcept {
