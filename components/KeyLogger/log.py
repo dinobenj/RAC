@@ -2,7 +2,7 @@
 cluster_start = -1
 in_cluster = True
 
-def log(char, time):
+def cluster(char, time):
   f = open("Logs/testLog.txt", "a")
   global cluster_start
   # print(time-cluster_start)
@@ -24,5 +24,11 @@ def log(char, time):
   #   cluster_start = time
   print(f"{char} at {time}")
   f.close()
+
+
+
+def log(char, time):
+  cluster(char, time)
+  
 
 
