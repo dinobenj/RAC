@@ -13,6 +13,7 @@
 | client.dll + 0x4F5D30        | 1 Byte (Array Of Booleans)  | m_dwForceAttack      | Same rules as `client.dll + 0x4F5D24` |
 | client.dll + 0x4F5D6C        | 1 Byte (Array Of Booleans)  | m_dwForceReload     | Same rules as `client.dll + 0x4F5D24` |
 | client.dll + 0x4F5D60        | 1 Byte (Array Of Booleans)  | m_dwForceCrouch     | Same rules as `client.dll + 0x4F5D24` |
+| client.dll + 0x4D5AE4        | 16 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_Players | Contains all players in the match in an array separated by 0x10 bytes each starting at this address. Fixed Size. Will only be allocated once at start of game to max player limit. |
 
 # Player pointer
 
