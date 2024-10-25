@@ -18,15 +18,15 @@
 
 | Offset          | Type            | Variable             | Description          |
 | --------------- | --------------- | -------------------- | -------------------- |
-| + 0x0094          | Integer         | m_iHealth            | health as displayed on screen (can't be changed though) |
-| + 0x009C          | Integer         | m_iTeamNum           | 0 if deciding, 1 Spectate, 2 Terrorist, 3 Counter Terrorist |
-| + 0x0350          | Boolean         | m_fFlags             | 0 if in air, 1 if grounded, (2 if trying to un-crouch but environment prevents it?), 3 if un-crouching (not fully), 5 if crouching (not fully), 6 if crouched in air, 7 if fully crouched |
-| + 0x0E48          | Float           | m_vecPunchAngle      | ???? Always 0 ?????? |
-| + 0x144C          | Float           | Total Flash Time     | A float that increases per time flashed. If a strong flash it increases a lot (up to 10), if weak it increases less (like 2) |
-| + 0x1450          | Float           | m_flFlashMaxDuration | Either 255 or 200. Not sure what it means |
-| + 0x1454          | Float           | Last Flash's Strength | A float between 0-7 representing the strength of the flash |
-| + 0x14F0	        | Integer	      | m_iCrosshairId	     | ?? unchangeable ?? |
-| + 0x0d80          | 3 byte (booleans?) | Weapon Held       | The three bytes here only change when swapping weapons. First byte seems to be Entity ID. Not sure on other two bytes |
+| + 0x0094          | 4 byte Integer  | m_iHealth            | health as displayed on screen (can't be changed though) |
+| + 0x009C          | 4 byte Integer  | m_iTeamNum           | 0 if deciding, 1 Spectate, 2 Terrorist, 3 Counter Terrorist |
+| + 0x0350          | Boolean (1 byte)| m_fFlags             | 0 if in air, 1 if grounded, (2 if trying to un-crouch but environment prevents it?), 3 if un-crouching (not fully), 5 if crouching (not fully), 6 if crouched in air, 7 if fully crouched |
+| + 0x0E48          | 4 Byte Float    | m_vecPunchAngle      | ???? Always 0 ?????? |
+| + 0x144C          | 4 Byte Float    | Total Flash Time     | A float that increases per time flashed. If a strong flash it increases a lot (up to 10), if weak it increases less (like 2) |
+| + 0x1450          | 4 Byte Float    | m_flFlashMaxDuration | Either 255 or 200. Not sure what it means |
+| + 0x1454          | 4 Byte Float    | Last Flash's Strength | A float between 0-7 representing the strength of the flash |
+| + 0x14F0	        | 4 byte Integer  | m_iCrosshairId	     | ?? unchangeable ?? |
+| + 0x0d80          | 3 bytes (booleans?)| Weapon Held       | The three bytes here only change when swapping weapons. First byte seems to be Entity ID. Not sure on other two bytes |
 | + 0xf4            | 4 Byte Float       | X-pos Velocity    | Velocity in X-pos. Not sure what units are. |
 | + 0xf8            | 4 Byte Float       | Y-pos Velocity    | Velocity in Y-pos. Not sure what units are. |
 | + 0xfC            | 4 Byte Float       | Z-pos Velocity    | Velocity in Z-pos. Not sure what units are. |
