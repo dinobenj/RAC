@@ -34,3 +34,4 @@
 | + 0x290           | 4 Byte Float       | X-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when x-position changes. |
 | + 0x294           | 4 Byte Float       | Y-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when y-position changes. |
 | + 0x298           | 4 Byte Float       | Z-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when z-position changes. |
+| + 0xCC4           | Array of 4 byte Pointers (47 in length) | Player Inventory | An Array initially set to -1 in every index. The next picked up weapon takes the first slot that = -1 and puts a pointer to the weapon there. 
