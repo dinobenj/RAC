@@ -2,23 +2,31 @@
 #include <unordered_set>
 #include <cstdlib>
 
-
 std::unordered_set<void*>& get_allocated_addresses() {
     //static std::unordered_set<void*> allocated_addresses;  
     return *new std::unordered_set<void*>;
 }
 
-void* operator new(std::size_t size) {
-    std::cout << "Allocating " << size << " bytes." << std::endl;
-    void * ptr = std::malloc(size);  
-    if (!ptr) {
-        throw std::bad_alloc(); 
-    }
-    std::cout << "Allocated address: " << ptr << std::endl;
-    get_allocated_addresses().insert(ptr); 
-    std::cout << "Total allocated memory: " << get_allocated_addresses().size() << " blocks." << std::endl;
-    return ptr;
-}
+class mem_queue{
+    public:
+        mem_queue(){};
+        void* operator new(std::size_t size) {
+            std::cout << "Allocating " << size << " bytes." << std::endl;
+            void * ptr = std::malloc(size);  
+            if (!ptr) {
+                throw std::bad_alloc(); 
+            }
+            std::cout << "Allocated address: " << ptr << std::endl;
+            get_allocated_addresses().insert(ptr); 
+            std::cout << "Total allocated memory: " << get_allocated_addresses().size() << " blocks." << std::endl;
+            return ptr;
+        }
+        void memcheck_scan();
+        void cleanup();
+    private:
+        std::unordered_set<void*> allocated_addresses;
+};
+
 
 void operator delete(void* ptr) noexcept {
     if (ptr) {
@@ -26,13 +34,6 @@ void operator delete(void* ptr) noexcept {
         std::free(ptr);  
     }
 }
-
-// void operator delete(void* ptr) noexcept {
-//     if (ptr) {
-//         get_allocated_addresses().erase(ptr);  
-//         std::free(ptr);  
-//     }
-// }
 
 void memcheck_scan() {
     if (get_allocated_addresses().empty()) {
@@ -49,16 +50,12 @@ void cleanup() {
 }
 
 int main() {
-    int* p1 = new int(10);
-    double* p2 = new double(20);
-    std::cout << "p1: " << *p1 << std::endl;
-    std::cout << "p2: " << *p2 << std::endl;
+    mem_queue* q = new mem_queue();
     memcheck_scan();
-    p2 = new double(25);
-    delete p1;
-
-
+    delete q;
     memcheck_scan();
+    cleanup();
+
 
     return 0;
 }
