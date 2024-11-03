@@ -1,8 +1,9 @@
+// src/dllScraper.cpp
+#include "../include/dllScraper.h"
 #include <iostream>
-#include <string>
 #include <windows.h>
 #include <fstream>
-#include <codecvt>  // For string conversion
+#include <codecvt>
 #include <locale>
 
 /**

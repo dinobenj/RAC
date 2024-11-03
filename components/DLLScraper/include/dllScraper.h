@@ -1,4 +1,4 @@
-// dllScraper.h
+// include/dllScraper.h
 #ifndef DLL_SCRAPER_H
 #define DLL_SCRAPER_H
 
