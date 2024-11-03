@@ -1,10 +1,18 @@
 #include <iostream>
 #include <string>
 #include <windows.h>
-#include <fstream>  // For file handling
+#include <fstream>
+#include <codecvt>  // For string conversion
+#include <locale>
+
+// Convert std::string to std::wstring
+std::wstring stringToWString(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.from_bytes(str);
+}
 
 void listDll(const std::string& folderPath, const std::string& outputFilePath) {
-    WIN32_FIND_DATA fileData;
+    WIN32_FIND_DATAW fileData;
     HANDLE hFind;
 
     // Open the file stream for writing
@@ -15,11 +23,11 @@ void listDll(const std::string& folderPath, const std::string& outputFilePath) {
         return;
     }
 
-    // Correct the search pattern to find all .dll files
-    std::string searchPath = folderPath + "\\*.dll";
+    // Convert folderPath to wide string and append the search pattern
+    std::wstring searchPath = stringToWString(folderPath + "\\*.dll");
 
-    // Correctly call FindFirstFile
-    hFind = FindFirstFile(searchPath.c_str(), &fileData);
+    // Use the wide version of FindFirstFile
+    hFind = FindFirstFileW(searchPath.c_str(), &fileData);
 
     if (hFind == INVALID_HANDLE_VALUE) {
         std::cerr << "No .dll files found or invalid folder path." << std::endl;
@@ -28,29 +36,12 @@ void listDll(const std::string& folderPath, const std::string& outputFilePath) {
 
     // Loop through and write all .dll files to the file
     do {
-        outputFile << fileData.cFileName << std::endl;
-    } while (FindNextFile(hFind, &fileData) != 0);
+        outputFile << std::wstring(fileData.cFileName).c_str() << std::endl;
+    } while (FindNextFileW(hFind, &fileData) != 0);
 
     // Close the handle and the file
     FindClose(hFind);
     outputFile.close();
 
     std::cout << "DLL list has been written to: " << outputFilePath << std::endl;
-}
-
-int main() {
-    std::string folderPath;
-    std::string outputFilePath;
-
-    // Get folder path and output file path from user
-    std::cout << "Please enter the folder path: ";
-    std::getline(std::cin, folderPath);
-
-    std::cout << "Please enter the output file path (e.g., output.txt): ";
-    std::getline(std::cin, outputFilePath);
-
-    // List all .dll files and write to the specified output file
-    listDll(folderPath, outputFilePath);
-
-    return 0;
 }
