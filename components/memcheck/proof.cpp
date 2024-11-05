@@ -46,7 +46,15 @@ class mem_queue{
         std::unordered_set<void*> allocated_addresses;
 };
 
-
+/**
+ * @brief Deallocates memory for a given pointer and removes it from the set of
+ *        allocated addresses.
+ * 
+ * @param ptr Pointer to the memory to be deallocated.
+ * 
+ * @note This is a global operator delete function that handles pointers globally.
+ *       If ptr is nullptr, no action is taken.
+ */
 void operator delete(void* ptr) noexcept {
     if (ptr) {
         get_allocated_addresses().erase(ptr);  
@@ -54,6 +62,12 @@ void operator delete(void* ptr) noexcept {
     }
 }
 
+/**
+ * @brief Checks and prints the current allocated memory addresses.
+ * 
+ * @note This function helps in debugging by displaying all currently allocated addresses.
+ *       If no addresses are allocated, it reports that no memory is currently allocated.
+ */
 void memcheck_scan() {
     if (get_allocated_addresses().empty()) {
         std::cout << "No memory currently allocated." << std::endl;
@@ -64,6 +78,12 @@ void memcheck_scan() {
         }
     }
 }
+
+/**
+ * @brief Clears the set of allocated addresses, releasing all tracked allocations.
+ * 
+ * @note Useful for resetting allocation tracking, especially at program termination.
+ */
 void cleanup() {
     get_allocated_addresses().clear();
 }
