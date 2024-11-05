@@ -1,7 +1,16 @@
 #include <iostream>
 #include <unordered_set>
 #include <cstdlib>
-
+/**
+ * @brief Retrieves a global or static set o allocated mememory addresses.
+ * 
+ * @return std::unordered_set<void*>& Reference to the unordered set
+ *         containing alocated memeory addresses.
+ * 
+ * @note Uses Dynamic Memory allocation for each call, which could result
+ *       in memory leaks.
+ * 
+ */
 std::unordered_set<void*>& get_allocated_addresses() {
     //static std::unordered_set<void*> allocated_addresses;  
     return *new std::unordered_set<void*>;
@@ -10,6 +19,16 @@ std::unordered_set<void*>& get_allocated_addresses() {
 class mem_queue{
     public:
         mem_queue(){};
+        /**
+         * @brief Allocates memory for a mem_queue object and tracks and allocated address.
+         * 
+         * @param size Size in bytes of memory to allocate.
+         * @return void* Pointer to the allocated memory.
+         * 
+         * @throws std::bad_alloc if memory allocation fails.
+         * 
+         * @note This function logs allocation size, address, and the pointer in a global set.
+         */
         void* operator new(std::size_t size) {
             std::cout << "Allocating " << size << " bytes." << std::endl;
             void * ptr = std::malloc(size);  
