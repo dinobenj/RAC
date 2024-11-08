@@ -36,3 +36,13 @@
 | + 0x298           | 4 Byte Float       | Z-position       | Doesn't seem to be the same as the value in "cl_showpos", but only changes when z-position changes. |
 | + 0xCC0           | Array of 4 byte ?Values? (48 in length) | Player Inventory | An Array initially set to -1 in every index. The next picked up weapon takes the first slot that = -1 and puts a pointer to the weapon there. |
 | + 0xC56           | Array of 2 byte Integers (52 in length)   | Reserve Ammo | An Array initially set to 0 in ever index. The weapon picked up in this slot index (look at 'Player Inventory') reserve ammo is stored here. Not sure why lengths don't match up...... |
+
+# Function in the code
+
+Client.dll + 0x189150 is a function run when switching weapons, picking them up, and dropping them
+
+
+Server.dll + 0xC91C0 is a function run when reloading a gun (specifically when your reserve and magazine ammo swap)
+           + 0xC91DC - EDI value is weapon slot it takes up in player inventory? It changes what weapon actually loses its reserve ammo
+                     - ESI is amount of ammo to remove
+            TO LOOK INTO: `mov eax,[ebx+edi*4+000006A4]` which gets the current weapons reserve ammo!!!!!!!!!!!
