@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <cstdlib>
+#include <bits/stdc++.h>
 /**
  * @brief Retrieves a global or static set o allocated mememory addresses.
  * 
@@ -18,7 +19,6 @@ std::unordered_set<void*>& get_allocated_addresses() {
 
 class mem_queue{
     public:
-        mem_queue(){};
         /**
          * @brief Allocates memory for a mem_queue object and tracks and allocated address.
          * 
@@ -33,16 +33,22 @@ class mem_queue{
             std::cout << "Allocating " << size << " bytes." << std::endl;
             void * ptr = std::malloc(size);  
             if (!ptr) {
-                throw std::bad_alloc(); 
+            throw std::bad_alloc(); 
             }
             std::cout << "Allocated address: " << ptr << std::endl;
             get_allocated_addresses().insert(ptr); 
             std::cout << "Total allocated memory: " << get_allocated_addresses().size() << " blocks." << std::endl;
             return ptr;
         }
+
+        void add_to_queue(int i) {
+            void* item = new mem_queue();
+            allocated_addresses.insert(item);
+            allocated_addresses.insert(&i);
+            std::cout << "Item added to queue. Address: " << item << std::endl;
+        }
         void memcheck_scan();
         void cleanup();
-    private:
         std::unordered_set<void*> allocated_addresses;
 };
 
@@ -76,6 +82,7 @@ void memcheck_scan() {
         for (const auto& addr : get_allocated_addresses()) {
             std::cout << "Address: " << addr << std::endl;
         }
+        std::cout << "Checksum of allocated addresses: " << std::hash<std::string>{}(std::to_string(reinterpret_cast<uintptr_t>(&get_allocated_addresses()))) << std::endl;
     }
 }
 
@@ -91,8 +98,9 @@ void cleanup() {
 int main() {
     mem_queue* q = new mem_queue();
     memcheck_scan();
-    delete q;
-    memcheck_scan();
+    int a = 4;
+    q->add_to_queue(a);
+    
     cleanup();
 
 
