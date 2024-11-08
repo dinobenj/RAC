@@ -6,6 +6,7 @@ class checksum_packet
     private:
         std::string message;
         unsigned int checksum;  // this is a 16 bit checksum
+        std::vector<uint8_t> checksum_arr;
         unsigned int seqNum;
 
     public:
@@ -14,7 +15,6 @@ class checksum_packet
         void setSeqNum(unsigned int num);
         std::string getMessage();
         int getLength();
-        unsigned int calculateChecksum();
+        std::vector<uint8_t> calculateChecksum();
         int getChecksum();
-        bool getSeqNum();
 };
