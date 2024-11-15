@@ -22,3 +22,4 @@ class reciever {
         void init_socket();
         void close_socket();
 };
+
