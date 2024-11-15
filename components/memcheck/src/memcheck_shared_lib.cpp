@@ -1,4 +1,4 @@
-#include "memcheck_shared_lib.h"
+#include "../include/memcheck_shared_lib.h"
 
 void pipecommand(std::string strCmd) {
     std::array<char, 80> buf;
