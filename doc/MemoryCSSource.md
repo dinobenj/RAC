@@ -17,8 +17,9 @@
 | -- | | | |
 | server.dll + 0x54EACC        | 32 bit float | Pistol_Starting_Reserve | Starting Reserve ammo for 9x19MM Sidearm (maybe for all pistols??) |
 | server.dll + 0x4F615C        | 16 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_players | Server-side array that contains all players in the match. look above for more info |
+| server.dll + 0x4F750C        | 16 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_Weapons | Around here is the start of the array for every weapon in the game. To get pointer for weapon you picked up, use a breakpoint on `Server.dll + 275CE0` and pick it up|
 
-# Player pointer (from client.dll)
+# Player Pointer (from client.dll)
 
 | Offset          | Type            | Variable             | Description          |
 | --------------- | --------------- | -------------------- | -------------------- |
@@ -40,6 +41,12 @@
 | + 0xCC0           | Array of 4 byte ?Values? (48 in length) | Player Inventory | An Array initially set to -1 in every index. The next picked up weapon takes the first slot that = -1 and puts a pointer to the weapon there. |
 | + 0xC56           | Array of 2 byte Integers (52 in length)   | Reserve Ammo | An Array initially set to 0 in ever index. The weapon picked up in this slot index (look at 'Player Inventory') reserve ammo is stored here. Not sure why lengths don't match up...... |
 
+# Weapon Pointer (from server.dll)
+
+| Offset          | Type            | Variable             | Description          |
+| --------------- | --------------- | -------------------- | -------------------- |
+| + 0x570         | 4 byte Integer  | Reserve Ammo         | The reserve ammo within the weapon. 0 if held, set to a value once dropped |
+
 # Function in the code
 
 Client.dll + 0x189150 is a function run when switching weapons, picking them up, and dropping them
@@ -49,3 +56,7 @@ Server.dll + 0xC91C0 is a function run when reloading a gun (specifically when y
            + 0xC91DC - EDI value is weapon slot it takes up in player inventory? It changes what weapon actually loses its reserve ammo
                      - ESI is amount of ammo to remove
            + `mov eax,[ebx+edi*4+000006A4]` is the same as `[Pointer value of player in server.dll + 0x4F615C] + (Weapon inventory slot within player * 4) + 0x6A4`
+
+Server.dll + CA0B0 is a function that deals with setting the reserve ammo for a weapon when dropping/picking one up
+
+Server.dll + 275CE0 is a getter for the ammo within a weapon (at least when its on the ground and just picked up)
