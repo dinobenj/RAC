@@ -42,6 +42,7 @@ void reciever::receive() {
 }
 
 void reciever::close_socket() {
+
 }
 
 
