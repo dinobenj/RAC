@@ -13,9 +13,12 @@
 | client.dll + 0x4F5D30        | 1 Byte (Array Of Booleans)  | m_dwForceAttack      | Same rules as `client.dll + 0x4F5D24` |
 | client.dll + 0x4F5D6C        | 1 Byte (Array Of Booleans)  | m_dwForceReload     | Same rules as `client.dll + 0x4F5D24` |
 | client.dll + 0x4F5D60        | 1 Byte (Array Of Booleans)  | m_dwForceCrouch     | Same rules as `client.dll + 0x4F5D24` |
-| client.dll + 0x4D5AE4        | 16 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_Players | Contains all players in the match in an array separated by 0x10 bytes each starting at this address. Fixed Size. Will only be allocated once at start of game to max player limit. |
+| client.dll + 0x4D5AE4        | 1 6 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_Players | Contains all players in the match in an array separated by 0x10 bytes each starting at this address. Fixed Size. Will only be allocated once at start of game to max player limit. |
+| -- | | | |
+| server.dll + 0x54EACC        | 32 bit float | Pistol_Starting_Reserve | Starting Reserve ammo for 9x19MM Sidearm (maybe for all pistols??) |
+| server.dll + 0x4F615C        | 16 byte struct. 32 bit pointer, and 12 other bytes | Array_Of_players | Server-side array that contains all players in the match. look above for more info |
 
-# Player pointer
+# Player pointer (from client.dll)
 
 | Offset          | Type            | Variable             | Description          |
 | --------------- | --------------- | -------------------- | -------------------- |
@@ -45,4 +48,4 @@ Client.dll + 0x189150 is a function run when switching weapons, picking them up,
 Server.dll + 0xC91C0 is a function run when reloading a gun (specifically when your reserve and magazine ammo swap)
            + 0xC91DC - EDI value is weapon slot it takes up in player inventory? It changes what weapon actually loses its reserve ammo
                      - ESI is amount of ammo to remove
-            TO LOOK INTO: `mov eax,[ebx+edi*4+000006A4]` which gets the current weapons reserve ammo!!!!!!!!!!!
+           + `mov eax,[ebx+edi*4+000006A4]` is the same as `[Pointer value of player in server.dll + 0x4F615C] + (Weapon inventory slot within player * 4) + 0x6A4`
