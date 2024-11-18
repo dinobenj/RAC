@@ -16,7 +16,15 @@ Make sure your paths are set correctly in your C/C++ properties file. especially
 ```
 
 Also make sure that the file has the right intelliSense Mode. Sometimes the even if the include path is correctly set, the code still will not compile.
+
 ```
 "intelliSenseMode": "windows-msvc-x64"
 ```
 
+Here is an example of program output where a program called `Debugged.exe` that is detected.
+
+```
+Checking all processes for debugging status...
+[DEBUGGED] Process ID: 12345
+  Process Name: Debugged.exe
+```
