@@ -1,4 +1,4 @@
-#Rudimentary Ani-Cheat
+# Rudimentary Ani-Cheat
 Yeah I love cheating *SLATT*
 ## Debug Auditor
 
