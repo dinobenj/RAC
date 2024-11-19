@@ -1,14 +1,18 @@
 #include <iostream>
 #include <windows.h>
 #include <tlhelp32.h>
-#include <winternl.h> // For NtQueryInformationProcess
-#include <string>
+#include <winternl.h> 
 
- #pragma comment(lib, "ntdll.lib")
 
-// Function pointer to NtQueryInformationProcess from ntdll.dll
+#pragma comment(lib, "ntdll.lib")
+
+template<typename Result, typename Original>
+Result function_cast(Original fptr)
+{
+  return reinterpret_cast<Result>(reinterpret_cast<void *>(fptr));
+}
 typedef NTSTATUS (NTAPI *pNtQueryInformationProcess)(
-    HANDLE ProcessHandle,
+    HANDLE ProcessHandle, 
     PROCESSINFOCLASS ProcessInformationClass,
     PVOID ProcessInformation,
     ULONG ProcessInformationLength,
@@ -20,6 +24,7 @@ bool IsProcessBeingDebugged(HANDLE hProcess) {
     HMODULE hNtdll = GetModuleHandleA("ntdll.dll");
     if (!hNtdll) return false;
 
+    //Use function cast if not working
     auto NtQueryInformationProcess = (pNtQueryInformationProcess)GetProcAddress(hNtdll, "NtQueryInformationProcess");
     if (!NtQueryInformationProcess) return false;
 
@@ -31,12 +36,13 @@ bool IsProcessBeingDebugged(HANDLE hProcess) {
 }
 
 int main() {
+    DWORD currentpid = GetCurrentProcessId(); 
     HANDLE pSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
     PROCESSENTRY32 entry;
     entry.dwSize = sizeof(PROCESSENTRY32);
 
-    std::wcout << L"Checking all processes for debugging status..." << std::endl;
+    std::cout << L"Checking all processes for debugging status..." << std::endl;
 
     // Iterate over all processes
     if (Process32First(pSnap, &entry)) {
@@ -44,8 +50,8 @@ int main() {
             HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, entry.th32ProcessID);
             if (hProcess != NULL) {
                 bool isDebugged = IsProcessBeingDebugged(hProcess);
-                if (isDebugged) {
-                    std::wcout << L"[DEBUGGED] Process ID: " << entry.th32ProcessID
+                if (isDebugged && entry.th32ProcessID != currentpid) {
+                    std::cout << L"[DEBUGGED] Process ID: " << entry.th32ProcessID
                                << L"\tProcess Name: " << entry.szExeFile << std::endl;
                 }
                 CloseHandle(hProcess);
