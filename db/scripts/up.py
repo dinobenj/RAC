@@ -5,7 +5,7 @@ import os
 import glob
 
 
-async def up_tables():
+async def up_tables() -> None:
     #onlyfiles = [f for f in os.listdir("./") if os.path.isfile(os.path.join("./", f))]
     sql_files = glob.glob("*.sql")
     sql_files.sort()
