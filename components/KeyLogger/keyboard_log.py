@@ -40,7 +40,7 @@ def log(char, timestamp):
     # If the time difference is within a threshold, we consider it a cluster
     if time_diff < 0.2:  # 1 second threshold for clustering
       # Add the current character as a child of the current node
-      for child in current_node.children:
+      for child in root.children:
         if child.name == char:
           child.strength += 1
           current_node = child
@@ -59,7 +59,6 @@ def log(char, timestamp):
           break
       if not found:
         # Create a new cluster starting with the current character
-        print("New cluster")
         new_node = TreeNode(char)
         current_node = root.add_child(new_node)
   else:

@@ -1,7 +1,7 @@
 from pynput import keyboard, mouse
 from time import time
 # from key_to_picture import addPixel, loadImage
-from log import log, writeAll
+from keyboard_log import log, writeAll
 
 # im = -1
 start = time()

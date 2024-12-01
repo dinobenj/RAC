@@ -1,5 +1,5 @@
 from pynput import keyboard
-from log import log
+from keyboard_log import log
 from time import time
 
 start = time()

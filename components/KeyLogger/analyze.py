@@ -169,25 +169,16 @@ def analyze_leaf_node_statistics(root: TreeNode):
 
 def analyze_repetition(root):
   """
-  Analyzes the repetition of nodes in the tree by looking for repeated sequences in direct succession until a non-repetition is found.
+  Analyzes the repetition of nodes in the tree by looking for repeated nodes with strength greater than 1.
   """
   repetition_counts = defaultdict(int)
 
-  def traverse(node, previous_name=None, repetition_count=1):
-    if previous_name == node.name:
-      repetition_count += 1
-    else:
-      if repetition_count > 5:
-        repetition_key = f"{previous_name} repeated {repetition_count} times consecutively"
-        repetition_counts[repetition_key] += 1
-      repetition_count = 1
-
-    for child in node.children:
-      traverse(child, node.name if previous_name == node.name else child.name, repetition_count)
-
-    if repetition_count > 5:
-      repetition_key = f"{node.name} repeated {repetition_count} times consecutively"
+  def traverse(node):
+    if node.strength > 1:
+      repetition_key = f"{node.name} repeated {node.strength} times consecutively"
       repetition_counts[repetition_key] += 1
+    for child in node.children:
+      traverse(child)
 
   if root is None:
     return
