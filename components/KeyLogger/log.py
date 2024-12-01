@@ -1,5 +1,6 @@
 from pynput import keyboard
 from Tree import TreeNode
+from analyze import analyze
 
 # Initialize the root of the tree
 root = TreeNode("root")
@@ -14,6 +15,7 @@ def end():
   with open("Logs/tree_output.txt", "w") as file:
     # file.write(root.print_tree_by_children())
     file.write(root.print_tree_paths())
+  analyze(root)
 
 def log(char, timestamp):
   global last_char, last_time, current_node
