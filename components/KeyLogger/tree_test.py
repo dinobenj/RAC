@@ -13,6 +13,7 @@ root.add_child(child2)
 
 child1.add_child(child3)
 
+print(type(root))
 print(root)
 
 

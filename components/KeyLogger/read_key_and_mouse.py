@@ -1,7 +1,7 @@
 from pynput import keyboard, mouse
 from time import time
 # from key_to_picture import addPixel, loadImage
-from log import log
+from log import log, writeAll
 
 # im = -1
 start = time()
@@ -18,6 +18,7 @@ def key_press(key):
   global start
   if key == keyboard.Key.esc:
     # mouse_listener.stop()
+    writeAll()
     return False
   try:
     key_name = key.char # type str
@@ -43,8 +44,8 @@ def key_press(key):
 # Running the listener
 
 if __name__ == "__main__":
-  f = open("Logs/testLog.txt", "w")
-  f.close()
+  # f = open("Logs/testLog.txt", "w")
+  # f.close()
   # im = loadImage("Pictures/pica.png")
 
   keyboard_listener = keyboard.Listener(on_press=key_press)
