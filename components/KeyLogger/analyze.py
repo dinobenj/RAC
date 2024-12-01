@@ -10,8 +10,9 @@ def analyze(root):
   analyze_most_frequent_nodes(root)
   analyze_path_length_distribution(root)
   analyze_leaf_node_statistics(root)
+  analyze_repetition(root)
 
-def general_analyze(root):
+def general_analyze(root: TreeNode):
   global LOG
   # Analyze the tree structure
   total_nodes = 0
@@ -19,7 +20,7 @@ def general_analyze(root):
   max_depth = 0
   frequent_paths = defaultdict(int)
 
-  def traverse(node, depth=0, current_path=None):
+  def traverse(node: TreeNode, depth=0, current_path=None):
     nonlocal total_nodes, total_strength, max_depth
     if current_path is None:
       current_path = []
@@ -54,14 +55,14 @@ def general_analyze(root):
       file.write(f"{path} (Frequency: {freq})\n")
 
 
-def analyze_average_branching(root):
+def analyze_average_branching(root: TreeNode):
   """
   Calculates the average number of children (branching factor) for each node in the tree.
   """
   total_nodes = 0
   total_children = 0
 
-  def traverse(node):
+  def traverse(node: TreeNode):
     nonlocal total_nodes, total_children
     total_nodes += 1
     total_children += len(node.children)
@@ -75,13 +76,13 @@ def analyze_average_branching(root):
     file.write(f"Average Branching Factor: {avg_branching}\n")
 
 
-def analyze_depth_distribution(root):
+def analyze_depth_distribution(root: TreeNode):
   """
   Analyzes the depth distribution of the nodes in the tree.
   """
   depth_counts = defaultdict(int)
 
-  def traverse(node, depth=0):
+  def traverse(node: TreeNode, depth=0):
     depth_counts[depth] += 1
     for child in node.children:
       traverse(child, depth + 1)
@@ -93,13 +94,13 @@ def analyze_depth_distribution(root):
       file.write(f"Depth {depth}: {count} nodes\n")
 
 
-def analyze_most_frequent_nodes(root):
+def analyze_most_frequent_nodes(root: TreeNode):
   """
   Identifies the nodes that appear most frequently in the tree.
   """
   node_frequency = defaultdict(int)
 
-  def traverse(node):
+  def traverse(node: TreeNode):
     node_frequency[node.name] += 1
     for child in node.children:
       traverse(child)
@@ -112,13 +113,13 @@ def analyze_most_frequent_nodes(root):
       file.write(f"Node '{name}' appears {freq} times\n")
 
 
-def analyze_path_length_distribution(root):
+def analyze_path_length_distribution(root: TreeNode):
   """
   Analyzes the distribution of path lengths from the root to each leaf node.
   """
   path_lengths = []
 
-  def traverse(node, length=0):
+  def traverse(node: TreeNode, length=0):
     if not node.children:
       path_lengths.append(length)
     else:
@@ -138,13 +139,13 @@ def analyze_path_length_distribution(root):
       file.write("No paths in the tree.\n")
 
 
-def analyze_leaf_node_statistics(root):
+def analyze_leaf_node_statistics(root: TreeNode):
   """
   Provides statistics specifically about the leaf nodes in the tree.
   """
   leaf_nodes = []
 
-  def traverse(node):
+  def traverse(node: TreeNode):
     if not node.children:
       leaf_nodes.append(node)
     for child in node.children:
@@ -166,4 +167,33 @@ def analyze_leaf_node_statistics(root):
       file.write("No leaf nodes in the tree.\n")
 
 
+def analyze_repetition(root):
+  """
+  Analyzes the repetition of nodes in the tree by looking for repeated sequences in direct succession until a non-repetition is found.
+  """
+  repetition_counts = defaultdict(int)
 
+  def traverse(node, previous_name=None, repetition_count=1):
+    if previous_name == node.name:
+      repetition_count += 1
+    else:
+      if repetition_count > 5:
+        repetition_key = f"{previous_name} repeated {repetition_count} times consecutively"
+        repetition_counts[repetition_key] += 1
+      repetition_count = 1
+
+    for child in node.children:
+      traverse(child, node.name if previous_name == node.name else child.name, repetition_count)
+
+    if repetition_count > 5:
+      repetition_key = f"{node.name} repeated {repetition_count} times consecutively"
+      repetition_counts[repetition_key] += 1
+
+  if root is None:
+    return
+
+  traverse(root)
+  with open(log_file_path, "a") as file:
+    file.write("\n\nNode Repetition Analysis:\n")
+    for repetition, count in repetition_counts.items():
+      file.write(f"{repetition} occurs {count} times\n")
