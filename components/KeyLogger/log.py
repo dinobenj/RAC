@@ -1,86 +1,64 @@
+from pynput import keyboard
 from Tree import TreeNode
 
-cluster_start = -1
-in_cluster = True
+# Initialize the root of the tree
+root = TreeNode("root")
 
-trees: dict[chr, TreeNode] = {}
-current_node = None
+# Keep track of the last logged character and time
+last_char = None
+last_time = None
+current_node = root
 
-def cluster(char, time):
-  f = open("Logs/testLog.txt", "a")
-  global cluster_start
-  # print(time-cluster_start)
+def end():
+  # print("HI")
+  print(root)
 
-  if time > 0.2:
-    f.write("\n> ")
+def log(char, timestamp):
   print(char)
-  if len(char) == 1:
-    f.write(char)
+  if char == keyboard.Key.esc:
+    end()
+    return
 
-  # if time < 0.2:
-  #   if len(char) == 1:
-  #     f.write(char)
-  # else:
-  #   print("NEW CLUSTER STARTS")
-  #   f.write("\n> ")
-  #   if len(char) == 1:
-  #     f.write(char)
-  #   cluster_start = time
-  print(f"{char} at {time}")
-  f.close()
+  global last_char, last_time, current_node
 
-# def add_char_to_tree(char):
-#   global trees, in_cluster, current_node
-
-#   print(trees.keys())
-#   if char in trees.keys():
-#     print("Tree exists. Checking children")
-#     node = trees[char]
-
-#     found = False
-#     for child in node.children:
-#       if char == child.name:
-#         print("Found child. Increasing strength and breaking")
-#         child.strength += 1
-#         current_node = child
-#         found = True
-#         break
-#     if not found:
-#       print("Child does not exist. Creating child")
-#       trees[char].add_child(TreeNode(char))
-
-#   else:
-#     print("Tree does not exist. Creating tree")
-#     trees[char] = TreeNode(char)
-
-def add_child_to_node(node: TreeNode, char: str):
-  node.add_child(TreeNode(char))
-
-def add_char_to_cluster(node: TreeNode, char: str):
-  if char in node:
-    
-  else:
-    add_child_to_node()
-
-def add_char_to_tree(char: str, in_cluster: bool):
-  global trees
+  # If the current node is None, reset to root
+  if current_node is None:
+    current_node = root
   
-  in_cluster = True # RIGHT NOW TESTING WITH ALWAYS BEING IN THE SAME CLUSTER
-  if in_cluster:
-    add_char_to_cluster(char)
-
-def log(char, time):
-  # cluster(char, time)
-  # print(char, type(char))
-  add_char_to_tree(char, time < 0.2)
-
-def writeAll():
-  print("WRITING!!")
-  thing = []
-  for tree in trees.values():
-    # thing.append(tree.print_tree_by_children())
-    print(tree)
-    print(tree.children)
-    break
-  print(thing)
-
+  # If there was a previous character logged
+  if last_char is not None:
+    time_diff = timestamp - last_time
+    
+    # If the time difference is within a threshold, we consider it a cluster
+    if time_diff < 0.2:  # 1 second threshold for clustering
+      # Add the current character as a child of the current node
+      for child in current_node.children:
+        if child.name == char:
+          child.strength += 1
+          current_node = child
+          break
+      else:
+        new_node = TreeNode(char)
+        current_node = current_node.add_child(new_node)
+    else:
+      # If time difference is too large, start a new cluster
+      found = False
+      for child in root.children:
+        if child.name == char:
+          child.strength += 1
+          current_node = child
+          found = True
+          break
+      if not found:
+        # Create a new cluster starting with the current character
+        print("New cluster")
+        new_node = TreeNode(char)
+        current_node = root.add_child(new_node)
+  else:
+    # If this is the first character, add it to the root
+    new_node = TreeNode(char)
+    current_node = root.add_child(new_node)
+  
+  # Update the last logged character and time
+  last_char = char
+  last_time = timestamp

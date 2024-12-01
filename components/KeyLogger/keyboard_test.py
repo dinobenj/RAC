@@ -1,7 +1,15 @@
 from pynput import keyboard
+from log import log
+from time import time
+
+start = time()
 
 def key_press(key):
+  global start
   print(f"Key pressed: {key}")
+  old = start
+  start = time()
+  log(key, start - old)
   if key == keyboard.Key.esc:
     return False
 

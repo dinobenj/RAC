@@ -8,7 +8,14 @@ class TreeNode:
     self.strength = 1
 
   def add_child(self, child_node: 'TreeNode'):
+    # Check if child already exists
+    for child in self.children:
+      if child.name == child_node.name:
+        child.strength += 1
+        return child
+    # If not, add new child
     self.children.append(child_node)
+    return child_node
 
   def __repr__(self):
     return self.print_tree_by_children()[:-1]
@@ -17,7 +24,7 @@ class TreeNode:
   
   def print_tree_by_children(self, level=0):
     # print(level, type(level))
-    ret = "\t" * level + repr(self.name) + "\n"
+    ret = "  " * level + repr(self.name) + f" (strength: {self.strength})\n"
     for child in self.children:
       ret += child.print_tree_by_children(level + 1)
     return ret
