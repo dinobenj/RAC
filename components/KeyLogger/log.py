@@ -10,16 +10,22 @@ last_time = None
 current_node = root
 
 def end():
-  # print("HI")
-  print(root)
+  # Write the tree structure to a file
+  with open("Logs/tree_output.txt", "w") as file:
+    # file.write(root.print_tree_by_children())
+    file.write(root.print_tree_paths())
 
 def log(char, timestamp):
-  print(char)
+  global last_char, last_time, current_node
+
   if char == keyboard.Key.esc:
     end()
     return
+  if char == keyboard.Key.space:
+    current_node = root
+  if "Key" in str(char):
+    return
 
-  global last_char, last_time, current_node
 
   # If the current node is None, reset to root
   if current_node is None:

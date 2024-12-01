@@ -28,6 +28,23 @@ class TreeNode:
     for child in self.children:
       ret += child.print_tree_by_children(level + 1)
     return ret
+  
+  def print_tree_paths(self, current_path=None):
+    if current_path is None:
+      current_path = []
+
+    current_path.append(f"{self.name} (strength: {self.strength})")
+    ret = ""
+
+    if not self.children:
+      # If there are no children, print the current path
+      ret += " -> ".join(current_path) + "\n"
+    else:
+      # If there are children, recursively print each path
+      for child in self.children:
+        ret += child.print_tree_paths(current_path.copy())
+
+    return ret
 
   # def print_tree_by_level(self, level=0):
   #   # [[[]]]
