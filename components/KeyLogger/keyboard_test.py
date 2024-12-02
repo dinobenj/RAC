@@ -11,6 +11,7 @@ def key_press(key):
   start = time()
   log(key, start - old)
   if key == keyboard.Key.esc:
+    print("Keyboard listener stopped.")
     return False
 
 if __name__ == "__main__":
