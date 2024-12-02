@@ -1,6 +1,6 @@
 from pynput import keyboard
 from Tree import TreeNode
-from analyze import analyze
+from keyboard_analyze import analyze
 
 # Initialize the root of the tree
 root = TreeNode("root")
