@@ -1,54 +1,37 @@
-import asyncio
-import asyncpg
-import pandas as pd
-import dotenv
-import os
+import csv
+import random
+import time
+from datetime import datetime
 
+# Function to generate random data for CSV
+def generate_random_data():
+    # Random timestamp: simulate a realistic timestamp (within the past 24 hours)
+    random_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-async def insert_debugged_processes(csv_file: str) -> None:
-    """
-    Reads a CSV file and inserts its data into the DebuggedProcesses table.
-    """
-    # Load environment variables
-    dotenv.load_dotenv()
-    conn_str = os.getenv("POSTGRES_CONN_STR")
-    if not conn_str:
-        print("Error: POSTGRES_CONN_STR not set in .env file.")
-        return
+    # Random PID (between 1000 and 9999 for simplicity)
+    random_pid = random.randint(1000, 9999)
 
-    # Read the CSV file into a pandas DataFrame
-    try:
-        df = pd.read_csv(csv_file)
-    except Exception as e:
-        print(f"Error reading CSV file: {e}")
-        return
+    # Random process name (can be anything like a file name, for example)
+    process_names = [
+        "/usr/bin/python3", "/usr/bin/bash", "/usr/local/bin/app", "/usr/bin/nginx", 
+        "/usr/bin/clang", "/bin/bash", "/usr/bin/firefox", "/usr/bin/gcc"
+    ]
+    random_process_name = random.choice(process_names)
 
-    # Connect to the database
-    conn = await asyncpg.connect(conn_str)
-    try:
-        for _, row in df.iterrows():
-            # Handle missing DebugStartTime
-            debug_start_time = row['DebugStartTime'] if not pd.isna(row['DebugStartTime']) else None
-            try:
-                await conn.execute(
-                    """
-                    INSERT INTO DebuggedProcesses (ProcessName, ProcessPid, DebugStartTime)
-                    VALUES ($1, $2, $3)
-                    """,
-                    row['ProcessName'], 
-                    row['ProcessPid'], 
-                    debug_start_time
-                )
-                print(f"Inserted: {row['ProcessName']} (PID: {row['ProcessPid']})")
-            except Exception as e:
-                print(f"Error inserting row: {row}. Error: {e}")
+    return [random_timestamp, random_pid, random_process_name]
 
-    finally:
-        await conn.close()
-        print("Database connection closed.")
+# Path to the CSV file
+csv_file = 'debugged_processes.csv'
 
+# Writing the CSV file
+with open(csv_file, mode='w', newline='') as file:
+    writer = csv.writer(file)
 
-if __name__ == "__main__":
-    # Replace 'debugged_processes.csv' with the actual path to your CSV file
-    csv_file_path = "debugged_processes.csv"
-    asyncio.run(insert_debugged_processes(csv_file_path))
+    # Write the header
+    writer.writerow(["Timestamp", "PID", "Process Name"])
+
+    # Generate and write 100 rows of random data
+    for _ in range(100):
+        writer.writerow(generate_random_data())
+
+print(f"CSV file '{csv_file}' generated successfully with 100 random rows.")
