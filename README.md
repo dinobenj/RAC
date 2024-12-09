@@ -20,6 +20,7 @@ Also make sure that the file has the right intelliSense Mode. Sometimes the even
 ```
 "intelliSenseMode": "windows-msvc-x64"
 ```
+### Using the Debug Auditor
 
 Here is an example of program output where a program called `Debugged.exe` that is detected.
 
