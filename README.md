@@ -1,4 +1,4 @@
-# Rudimentary Ani-Cheat
+# Rudimentary Anti-Cheat
 Yeah I love cheating *SLATT*
 ## Debug Auditor
 
@@ -28,3 +28,15 @@ Checking all processes for debugging status...
 [DEBUGGED] Process ID: 12345
   Process Name: Debugged.exe
 ```
+
+The data collected from the debug analyzer will be sent to the database for further analysis.
+But this program also provides a local analysis option. Debugged programs can be compared to
+a list of other program names for a naive cheater analysis. 
+
+```
+./program_checker <program data> <programs>
+```
+
+For understanding the workflow of the program I have provided a Snakemake pipeline.
+Snakemake is an easy to use, Python-like language to organize workflows. In this case it was
+used to make the program and data transportation easier to understand. 
