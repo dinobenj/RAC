@@ -1,5 +1,7 @@
 # Rudimentary Anti-Cheat
-Yeah I love cheating *SLATT*
+
+Rudimentary Anti-Cheat (RAC) is a proof-of-concept anti-cheat aimed at combating cheating and foul play present on games/applications running on the Windows 10/11 operating systems. RAC is meant to be a way for both members of the project, and the general open source community to observe anti-cheat implementations.
+
 ## Debug Auditor
 
 The debug auditor is tasked with identifying any potentially suspicious programs operating on a system. It achieves this by detecting programs that have a debugger attached. The presence of such a program may indicate an attempt by the user to manipulate data within the program.
@@ -20,8 +22,8 @@ Also make sure that the file has the right intelliSense Mode. Sometimes the even
 ```
 "intelliSenseMode": "windows-msvc-x64"
 ```
-### Using the Debug Auditor
 
+### Using the Debug Auditor
 Here is an example of program output where a program called `Debugged.exe` that is detected.
 
 ```
